@@ -1,39 +1,39 @@
 ﻿using UnityEngine;
-using System.Collections;
 using DG.Tweening;
 
 public class Fader : MonoBehaviour
 {
-    [SerializeField, HideInInspector] Shader shader;
-    Material mat;
-    [SerializeField] float fadeTime = 0.2f;
-    WaitForSeconds wait;
+	[SerializeField, HideInInspector] Shader shader;
+	Material mat;
 
-    void Reset()
-    {
-        shader = Shader.Find("Hidden/Fader");
-    }
+	[SerializeField] float fadeTime = 4f;
+	[SerializeField] bool fadedOnAwake;
 
-    void Awake()
-    {
-        mat = new Material(shader);
-        wait = new WaitForSeconds(fadeTime);
-    }
+	void Reset()
+	{
+		shader = Shader.Find("Hidden/Fader");
+	}
 
-    public IEnumerator FadeIn()
-    {
-        mat.DOFloat(0, "_FadeLevel", fadeTime);
-        yield return wait;
-    }
+	void Awake()
+	{
+		mat = new Material(shader);
+		if (fadedOnAwake) mat.SetFloat("_FadeLevel", 1f);
+	}
 
-    public IEnumerator FadeOut()
-    {
-        mat.DOFloat(1, "_FadeLevel", fadeTime);
-        yield return wait;
-    }
+	public void FadeIn()
+	{
+		mat.DOKill();
+		mat.DOFloat(0f, "_FadeLevel", fadeTime).SetEase(Ease.InCubic);
+	}
 
-    void OnRenderImage(RenderTexture src, RenderTexture dest)
-    {
-        Graphics.Blit(src, dest, mat);
-    }
+	public void FadeOut()
+	{
+		mat.DOKill();
+		mat.DOFloat(1f, "_FadeLevel", fadeTime).SetEase(Ease.OutCubic);
+	}
+
+	void OnRenderImage(RenderTexture src, RenderTexture dest)
+	{
+		Graphics.Blit(src, dest, mat);
+	}
 }
