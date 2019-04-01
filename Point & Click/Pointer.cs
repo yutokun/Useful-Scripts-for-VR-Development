@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(LineRenderer))]
 public class Pointer : MonoBehaviour
 {
 	LineRenderer line;
 	RaycastHit hit;
 	IPointable pointable, prevPointable;
-	bool isRunning = true;
+	public bool isRunning = true;
 
 #if OCULUS
 	static bool Trigger => OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger) || OVRInput.GetDown(OVRInput.Button.One);
@@ -36,7 +37,7 @@ public class Pointer : MonoBehaviour
 
 		if (pointable != prevPointable)
 		{
-			prevPointable?.Unpoint();
+			prevPointable?.UnPoint();
 			pointable?.Point();
 			prevPointable = pointable;
 		}
