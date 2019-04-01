@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -68,6 +69,24 @@ public static class Tween
 		{
 			var lerpTime = (Time.time - startTime) / duration;
 			target.color = Color.Lerp(initial, color, lerpTime);
+			yield return null;
+		}
+	}
+
+	public static Coroutine Float(float start, float end, float duration, Action<float> action)
+	{
+		return TweenBase.Instance.StartCoroutine(FloatCoroutine(start, end, duration, action));
+	}
+
+	static IEnumerator FloatCoroutine(float start, float end, float duration, Action<float> action)
+	{
+		var medium = start;
+		var startTime = Time.time;
+		while (medium != end)
+		{
+			var lerpTime = (Time.time - startTime) / duration;
+			medium = Mathf.Lerp(start, end, lerpTime);
+			action.Invoke(medium);
 			yield return null;
 		}
 	}
