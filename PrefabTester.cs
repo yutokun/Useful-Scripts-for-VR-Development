@@ -74,7 +74,7 @@ public class PrefabTester : MonoBehaviour
 
 	void SetTextOnHud(string prefabName)
 	{
-		var index = currentIndex.ToString() + " / " + prefabs.Length.ToString();
+		var index = (currentIndex + 1).ToString() + " / " + prefabs.Length.ToString();
 		var text = prefabName + "\n" + index;
 		if (hud) hud.text = text;
 	}
