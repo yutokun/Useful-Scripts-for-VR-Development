@@ -2,11 +2,27 @@
 using TMPro;
 using UnityEngine;
 
+public class TweenBase : MonoBehaviour
+{
+	static TweenBase InstanceCache;
+
+	public static TweenBase Instance
+	{
+		get
+		{
+			if (InstanceCache) return InstanceCache;
+
+			var obj = new GameObject("TweenBase");
+			return InstanceCache = obj.AddComponent<TweenBase>();
+		}
+	}
+}
+
 public static class Tween
 {
-	public static Coroutine Scale(MonoBehaviour self, Transform target, float scale, float duration)
+	public static Coroutine Scale(this Transform target, float scale, float duration)
 	{
-		return self.StartCoroutine(ScaleCoroutine(target, scale, duration));
+		return TweenBase.Instance.StartCoroutine(ScaleCoroutine(target, scale, duration));
 	}
 
 	static IEnumerator ScaleCoroutine(Transform target, float scale, float duration)
@@ -22,12 +38,12 @@ public static class Tween
 		}
 	}
 
-	public static Coroutine FadeText(MonoBehaviour self, TextMeshPro target, Color color, float duration)
+	public static Coroutine FadeText(this TextMeshPro target, Color color, float duration)
 	{
-		return self.StartCoroutine(FadeText(target, color, duration));
+		return TweenBase.Instance.StartCoroutine(FadeTextCoroutine(target, color, duration));
 	}
 
-	static IEnumerator FadeText(TextMeshPro target, Color color, float duration)
+	static IEnumerator FadeTextCoroutine(TextMeshPro target, Color color, float duration)
 	{
 		var initial = target.color;
 		var startTime = Time.time;
@@ -39,9 +55,9 @@ public static class Tween
 		}
 	}
 
-	public static Coroutine FadeMaterial(MonoBehaviour self, Material target, Color color, float duration)
+	public static Coroutine FadeMaterial(this Material target, Color color, float duration)
 	{
-		return self.StartCoroutine(FadeMaterialCoroutine(target, color, duration));
+		return TweenBase.Instance.StartCoroutine(FadeMaterialCoroutine(target, color, duration));
 	}
 
 	static IEnumerator FadeMaterialCoroutine(Material target, Color color, float duration)
