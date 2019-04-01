@@ -1,32 +1,51 @@
 ﻿using UnityEngine;
 
-/// <summary>
-/// Oculus Touch で動く、シンプルな移動プログラムです。
-/// 上下移動を行うには、LIndexTrigger を Joystick Axis、9th Axis で定義する必要があります。
-/// 回転を行うには、RThumbstickHorizontal を Joystick Axis、4th Axis で定義する必要があります。
-/// </summary>
 public class XRLocomotion : MonoBehaviour
 {
-	[SerializeField] float speed = 0.1f;
-	static bool Elevate => Input.GetAxis("LIndexTrigger") > 0.8f;
+	[SerializeField] float speed = 1f;
+
+	new Transform camera;
+
+#if OCULUS
+	static Vector2 MoveAxis => OVRInput.Get(OVRInput.RawAxis2D.LThumbstick);
+	static Vector2 RotateAxis => OVRInput.Get(OVRInput.RawAxis2D.RThumbstick);
+#else
+	static Vector2 MoveAxis => Vector2.zero;
+	static Vector2 RotateAxis => Vector2.zero;
+#endif
+
+	void Awake()
+	{
+		camera = Camera.main.transform;
+	}
 
 	void Update()
 	{
+		Move();
+		Rotate();
+	}
+
+	void Move()
+	{
 		var movement = new Vector3();
 
-		if (Elevate)
-		{
-			movement.y = Input.GetAxis("Vertical");
-		}
-		else
-		{
-			movement.x = Input.GetAxis("Horizontal");
-			movement.z = Input.GetAxis("Vertical");
-		}
+		movement.x += MoveAxis.x;
+		movement.z += MoveAxis.y;
 
-		movement *= speed;
+		if (Input.GetKey(KeyCode.W)) movement.z += speed;
+		if (Input.GetKey(KeyCode.A)) movement.x -= speed;
+		if (Input.GetKey(KeyCode.S)) movement.z -= speed;
+		if (Input.GetKey(KeyCode.D)) movement.x += speed;
+
+		movement = camera.TransformVector(movement);
+		movement.y = 0f;
+		movement *= Time.deltaTime;
 		transform.Translate(movement, Space.Self);
+	}
 
-		transform.Rotate(0, Input.GetAxis("RThumbstickHorizontal"), 0);
+	void Rotate()
+	{
+		var rotation = RotateAxis.x;
+		transform.Rotate(0f, rotation, 0f);
 	}
 }
