@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-public class APKBuilder
+public static class APKBuilder
 {
 	[MenuItem("Build/Build for Store")]
 	public static void Build()
