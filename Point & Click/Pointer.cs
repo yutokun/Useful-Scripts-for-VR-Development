@@ -7,7 +7,11 @@ public class Pointer : MonoBehaviour
 	IPointable pointable, prevPointable;
 	bool isRunning = true;
 
+#if OCULUS
 	static bool Trigger => OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.GetDown(OVRInput.Button.SecondaryIndexTrigger) || OVRInput.GetDown(OVRInput.Button.One);
+#else
+	static bool Trigger => false;
+#endif
 
 	void Start()
 	{
