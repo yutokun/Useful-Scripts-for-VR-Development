@@ -9,6 +9,9 @@ public class Fader : MonoBehaviour
 	[SerializeField] float fadeTime = 4f;
 	[SerializeField] bool fadedOnAwake;
 
+	static readonly int FadeLevel = Shader.PropertyToID("_FadeLevel");
+
+
 	void Reset()
 	{
 		shader = Shader.Find("Hidden/Fader");
@@ -17,19 +20,19 @@ public class Fader : MonoBehaviour
 	void Awake()
 	{
 		mat = new Material(shader);
-		if (fadedOnAwake) mat.SetFloat("_FadeLevel", 1f);
+		if (fadedOnAwake) mat.SetFloat(FadeLevel, 1f);
 	}
 
 	public void FadeIn()
 	{
 		mat.DOKill();
-		mat.DOFloat(0f, "_FadeLevel", fadeTime).SetEase(Ease.InCubic);
+		mat.DOFloat(0f, FadeLevel, fadeTime).SetEase(Ease.InCubic);
 	}
 
 	public void FadeOut()
 	{
 		mat.DOKill();
-		mat.DOFloat(1f, "_FadeLevel", fadeTime).SetEase(Ease.OutCubic);
+		mat.DOFloat(1f, FadeLevel, fadeTime).SetEase(Ease.OutCubic);
 	}
 
 	void OnRenderImage(RenderTexture src, RenderTexture dest)
