@@ -2,6 +2,7 @@
 using UnityEditor;
 using UnityEngine;
 
+[RequireComponent(typeof(Camera))]
 public class ScreenshotCapturer : MonoBehaviour
 {
 #if !UNITY_EDITOR
@@ -17,15 +18,6 @@ public class ScreenshotCapturer : MonoBehaviour
 	}
 
 	[SerializeField] Resolutions resolution;
-
-	void Reset()
-	{
-		if (GetComponent<Camera>() == null)
-		{
-			EditorUtility.DisplayDialog("Must be attached to camera.", "This script could runs only with camera.", "OK");
-			DestroyImmediate(this);
-		}
-	}
 
 	EditorWindow GetMainGameView()
 	{
@@ -62,9 +54,12 @@ public class ScreenshotCapturer : MonoBehaviour
 
 	void Update()
 	{
-		// todo リニア色空間に対応していない（2018.2）
-		var now = System.DateTime.Now.ToString().Replace("/", ".").Replace(":", ".");
-		var filename = "SS " + now + ".png";
-		if (Input.GetKeyDown(KeyCode.Space)) ScreenCapture.CaptureScreenshot(filename);
+		// TODO : リニア色空間に対応していない（2018.2）
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			var now = System.DateTime.Now.ToString().Replace("/", ".").Replace(":", ".");
+			var filename = "SS " + now + ".png";
+			ScreenCapture.CaptureScreenshot(filename);
+		}
 	}
 }
