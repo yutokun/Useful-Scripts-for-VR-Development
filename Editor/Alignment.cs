@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
-public class Alignment : MonoBehaviour
+public static class Alignment
 {
 	[MenuItem("Tools/Alignment/Align Local Y")]
 	public static void AlignLocalY()
