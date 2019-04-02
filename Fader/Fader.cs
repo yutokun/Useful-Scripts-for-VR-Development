@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using DG.Tweening;
 
 public class Fader : MonoBehaviour
 {
@@ -14,10 +13,12 @@ public class Fader : MonoBehaviour
 	Material mat;
 
 	public Color color = Color.black;
-	public float duration = 4f;
+	public float duration = 2f;
 	[SerializeField] Behaviour onAwake;
 
 	static readonly int FadeLevel = Shader.PropertyToID("_FadeLevel");
+
+	Coroutine tween;
 
 	void Reset()
 	{
@@ -44,15 +45,17 @@ public class Fader : MonoBehaviour
 
 	public void FadeIn()
 	{
-		mat.DOKill();
-		mat.DOFloat(0f, FadeLevel, duration).SetEase(Ease.InCubic);
+		if (tween != null) TweenBase.Instance.StopCoroutine(tween);
+		var fadeLevel = mat.GetFloat(FadeLevel);
+		tween = Tween.Float(fadeLevel, 0f, duration, n => mat.SetFloat(FadeLevel, n));
 	}
 
 	public void FadeOut()
 	{
-		mat.DOKill();
+		if (tween != null) TweenBase.Instance.StopCoroutine(tween);
 		mat.SetColor("_Color", color);
-		mat.DOFloat(1f, FadeLevel, duration).SetEase(Ease.OutCubic);
+		var fadeLevel = mat.GetFloat(FadeLevel);
+		tween = Tween.Float(fadeLevel, 1f, duration, n => mat.SetFloat(FadeLevel, n));
 	}
 
 	void OnRenderImage(RenderTexture src, RenderTexture dest)
