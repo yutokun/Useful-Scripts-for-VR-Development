@@ -3,6 +3,7 @@
 	Properties
 	{
 		[HideInInspector] _MainTex ("Texture", 2D) = "white" {}
+        _Color ("Color", Color) = (0, 0, 0, 0)
 		_FadeLevel ("Fade Level", Range(0, 1)) = 0
 	}
 	SubShader
@@ -40,13 +41,13 @@
 			
 			sampler2D _MainTex;
 			half4 _MainTex_ST;
+			fixed4 _Color;
 			float _FadeLevel;
 
 			fixed4 frag (v2f i) : SV_Target
 			{
 				fixed4 col = tex2D(_MainTex, UnityStereoScreenSpaceUVAdjust(i.uv, _MainTex_ST));
-				col *= 1 - fixed4(_FadeLevel, _FadeLevel, _FadeLevel, 1);
-				return col;
+				return lerp(col, _Color, _FadeLevel);;
 			}
 			ENDCG
 		}
