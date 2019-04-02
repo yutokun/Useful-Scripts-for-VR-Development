@@ -6,8 +6,8 @@ public class Fader : MonoBehaviour
 	enum Behaviour
 	{
 		DoNothing,
-		FadeInOnAwake,
-		FadedOnAwake
+		FadeIn,
+		Faded
 	}
 
 	[SerializeField, HideInInspector] Shader shader;
@@ -15,7 +15,7 @@ public class Fader : MonoBehaviour
 
 	[SerializeField] Color color = Color.black;
 	[SerializeField] float duration = 4f;
-	[SerializeField] Behaviour behaviour;
+	[SerializeField] Behaviour onAwake;
 
 	static readonly int FadeLevel = Shader.PropertyToID("_FadeLevel");
 
@@ -29,14 +29,14 @@ public class Fader : MonoBehaviour
 		mat = new Material(shader);
 		mat.SetColor("_Color", color);
 
-		switch (behaviour)
+		switch (onAwake)
 		{
-			case Behaviour.FadeInOnAwake:
+			case Behaviour.FadeIn:
 				mat.SetFloat(FadeLevel, 1f);
 				FadeIn();
 				break;
 
-			case Behaviour.FadedOnAwake:
+			case Behaviour.Faded:
 				mat.SetFloat(FadeLevel, 1f);
 				break;
 		}
