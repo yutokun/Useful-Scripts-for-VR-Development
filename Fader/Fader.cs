@@ -13,8 +13,8 @@ public class Fader : MonoBehaviour
 	[SerializeField, HideInInspector] Shader shader;
 	Material mat;
 
-	[SerializeField] Color color = Color.black;
-	[SerializeField] float duration = 4f;
+	public Color color = Color.black;
+	public float duration = 4f;
 	[SerializeField] Behaviour onAwake;
 
 	static readonly int FadeLevel = Shader.PropertyToID("_FadeLevel");
