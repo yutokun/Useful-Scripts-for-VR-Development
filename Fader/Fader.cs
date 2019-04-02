@@ -18,7 +18,7 @@ public class Fader : MonoBehaviour
 
 	static readonly int FadeLevel = Shader.PropertyToID("_FadeLevel");
 
-	Coroutine tween;
+	TweenRunner tween;
 
 	void Reset()
 	{
@@ -45,14 +45,14 @@ public class Fader : MonoBehaviour
 
 	public void FadeIn()
 	{
-		if (tween != null) TweenBase.Instance.StopCoroutine(tween);
+		tween?.Kill();
 		var fadeLevel = mat.GetFloat(FadeLevel);
 		tween = Tween.Float(fadeLevel, 0f, duration, n => mat.SetFloat(FadeLevel, n));
 	}
 
 	public void FadeOut()
 	{
-		if (tween != null) TweenBase.Instance.StopCoroutine(tween);
+		tween?.Kill();
 		mat.SetColor("_Color", color);
 		var fadeLevel = mat.GetFloat(FadeLevel);
 		tween = Tween.Float(fadeLevel, 1f, duration, n => mat.SetFloat(FadeLevel, n));

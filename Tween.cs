@@ -19,11 +19,28 @@ public class TweenBase : MonoBehaviour
 	}
 }
 
+public class TweenRunner
+{
+	public TweenRunner(Coroutine coroutine)
+	{
+		this.coroutine = coroutine;
+	}
+
+	Coroutine coroutine;
+
+	public void Kill()
+	{
+		TweenBase.Instance.StopCoroutine(coroutine);
+		coroutine = null;
+	}
+}
+
 public static class Tween
 {
-	public static Coroutine Scale(this Transform target, float scale, float duration)
+	public static TweenRunner Scale(this Transform target, float scale, float duration)
 	{
-		return TweenBase.Instance.StartCoroutine(ScaleCoroutine(target, scale, duration));
+		var tween = TweenBase.Instance.StartCoroutine(ScaleCoroutine(target, scale, duration));
+		return new TweenRunner(tween);
 	}
 
 	static IEnumerator ScaleCoroutine(Transform target, float scale, float duration)
@@ -39,9 +56,10 @@ public static class Tween
 		}
 	}
 
-	public static Coroutine FadeText(this TextMeshPro target, Color color, float duration)
+	public static TweenRunner FadeText(this TextMeshPro target, Color color, float duration)
 	{
-		return TweenBase.Instance.StartCoroutine(FadeTextCoroutine(target, color, duration));
+		var tween = TweenBase.Instance.StartCoroutine(FadeTextCoroutine(target, color, duration));
+		return new TweenRunner(tween);
 	}
 
 	static IEnumerator FadeTextCoroutine(TextMeshPro target, Color color, float duration)
@@ -56,9 +74,10 @@ public static class Tween
 		}
 	}
 
-	public static Coroutine FadeMaterial(this Material target, Color color, float duration)
+	public static TweenRunner FadeMaterial(this Material target, Color color, float duration)
 	{
-		return TweenBase.Instance.StartCoroutine(FadeMaterialCoroutine(target, color, duration));
+		var tween = TweenBase.Instance.StartCoroutine(FadeMaterialCoroutine(target, color, duration));
+		return new TweenRunner(tween);
 	}
 
 	static IEnumerator FadeMaterialCoroutine(Material target, Color color, float duration)
@@ -73,9 +92,10 @@ public static class Tween
 		}
 	}
 
-	public static Coroutine Float(float start, float end, float duration, Action<float> action)
+	public static TweenRunner Float(float start, float end, float duration, Action<float> action)
 	{
-		return TweenBase.Instance.StartCoroutine(FloatCoroutine(start, end, duration, action));
+		var tween = TweenBase.Instance.StartCoroutine(FloatCoroutine(start, end, duration, action));
+		return new TweenRunner(tween);
 	}
 
 	static IEnumerator FloatCoroutine(float start, float end, float duration, Action<float> action)
