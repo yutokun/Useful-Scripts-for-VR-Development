@@ -17,6 +17,8 @@ public class Pointer : MonoBehaviour
 	void Start()
 	{
 		line = GetComponent<LineRenderer>();
+		line.useWorldSpace = false;
+		line.positionCount = 2;
 	}
 
 	void Update()
