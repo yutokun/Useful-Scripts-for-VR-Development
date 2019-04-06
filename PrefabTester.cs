@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 
 public class PrefabTester : MonoBehaviour
 {
@@ -9,7 +10,6 @@ public class PrefabTester : MonoBehaviour
 	int NextIndex => currentIndex = (int) Mathf.Repeat(++currentIndex, prefabs.Length);
 	bool spawned;
 
-	[SerializeField] TextMesh hud;
 	Vector3 initialScale;
 	float scale = 1f;
 
@@ -19,6 +19,7 @@ public class PrefabTester : MonoBehaviour
 		set => scale = Mathf.Clamp(value, 0f, float.MaxValue);
 	}
 
+	[SerializeField] TextMeshPro hud;
 
 #if OCULUS
 	static bool DownNextButton => OVRInput.GetDown(OVRInput.RawButton.RThumbstickRight);
