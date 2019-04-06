@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 
@@ -34,6 +35,7 @@ public class ScreenshotCapturer : MonoBehaviour
 		var gvSize = prop.GetValue(gameView, new object[0]);
 		var gvSizeType = gvSize.GetType();
 
+		// TODO : Free Aspect モードだと解像度が反映されない
 		switch (resolution)
 		{
 			case Resolutions.OculusStoreScreenShot:
@@ -57,9 +59,15 @@ public class ScreenshotCapturer : MonoBehaviour
 		// TODO : リニア色空間に対応していない（2018.2）
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
+			var currentDir = Directory.GetParent(Application.dataPath).ToString();
+			const string ssDir = "ScreenShots";
+			Directory.CreateDirectory(Path.Combine(currentDir, ssDir));
+
 			var now = System.DateTime.Now.ToString().Replace("/", ".").Replace(":", ".");
 			var filename = "SS " + now + ".png";
-			ScreenCapture.CaptureScreenshot(filename);
+
+			var path = Path.Combine(currentDir, ssDir, filename);
+			ScreenCapture.CaptureScreenshot(path);
 		}
 	}
 }
