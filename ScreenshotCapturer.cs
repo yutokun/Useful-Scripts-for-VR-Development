@@ -60,7 +60,7 @@ public class ScreenshotCapturer : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			var currentDir = Directory.GetParent(Application.dataPath).ToString();
-			const string ssDir = "ScreenShots";
+			const string ssDir = "Screenshots";
 			Directory.CreateDirectory(Path.Combine(currentDir, ssDir));
 
 			var now = System.DateTime.Now.ToString().Replace("/", ".").Replace(":", ".");
