@@ -22,7 +22,7 @@ public class ScreenshotCapturer : MonoBehaviour
 	EditorWindow GetMainGameView()
 	{
 		var T = System.Type.GetType("UnityEditor.GameView,UnityEditor");
-		MethodInfo mainGameView = T.GetMethod("GetMainGameView", BindingFlags.NonPublic | BindingFlags.Static);
+		var mainGameView = T.GetMethod("GetMainGameView", BindingFlags.NonPublic | BindingFlags.Static);
 		var res = mainGameView.Invoke(null, null);
 		return (EditorWindow) res;
 	}
