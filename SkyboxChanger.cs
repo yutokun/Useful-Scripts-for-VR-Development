@@ -8,14 +8,13 @@ public class SkyboxChanger : MonoBehaviour
 	// Cubemap of Reflection Probe
 	[SerializeField] Cubemap map;
 
-	public void ChangeWithIBL(Material mat)
+	public void ChangeWithIBL(Material newSkybox)
 	{
-		RenderSettings.skybox = mat;
+		RenderSettings.skybox = newSkybox;
 
 		// Baking settings
 		var camera = new GameObject("CubemapCamera").AddComponent<Camera>();
-		camera.transform.position = Vector3.zero;
-		camera.transform.rotation = Quaternion.identity;
+		camera.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 		camera.cullingMask = 0;
 		camera.allowHDR = true;
 
